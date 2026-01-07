@@ -3,103 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Талисман Агро | Управление</title>
+    <title>Talisman Agro | Premium Logistics</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <style>
-        :root { --primary: #27ae60; --dark: #1e272e; --accent: #f1c40f; --light: #f4f7f6; }
-        * { box-sizing: border-box; scroll-behavior: smooth; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--light); color: #333; }
-        
-        /* Меню */
-        nav { background: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { font-weight: bold; color: var(--primary); font-size: 22px; }
-        nav a { text-decoration: none; color: var(--dark); margin-left: 20px; font-weight: 600; }
+        :root { --primary: #2ecc71; --dark: #0f172a; --glass: rgba(255, 255, 255, 0.05); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--dark); color: #fff; line-height: 1.6; overflow-x: hidden; }
+
+        /* Фон с переливом */
+        .bg-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%); z-index: -1; }
+
+        /* Навигация */
+        nav { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px); padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .logo { font-size: 24px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
+        .nav-links a { color: #cbd5e1; text-decoration: none; margin-left: 25px; font-weight: 500; transition: 0.3s; font-size: 14px; }
+        .nav-links a:hover { color: var(--primary); }
 
         /* Главный экран */
-        .hero { 
-            height: 70vh; 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80'); 
-            background-size: cover; background-position: center; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center;
-        }
+        header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px; background: linear-gradient(to bottom, rgba(15,23,42,0.2), var(--dark)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1600') center/cover fixed; }
+        header h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 900; background: linear-gradient(45deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; }
+        header p { font-size: 1.5rem; color: #94a3b8; max-width: 800px; margin-bottom: 40px; }
 
-        section { padding: 80px 10%; }
-        .section-title { text-align: center; margin-bottom: 40px; }
+        /* Секции */
+        section { padding: 100px 10%; }
+        .section-title { font-size: 3rem; margin-bottom: 50px; text-align: center; font-weight: 800; }
+        .section-title span { color: var(--primary); }
 
-        /* ГАЛЕРЕЯ ФОТО */
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
-        .gallery-item { height: 200px; border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
-        .gallery-item:hover img { transform: scale(1.1); }
-        .gallery-item span { position: absolute; bottom: 10px; left: 10px; color: white; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 5px; font-size: 12px; }
+        /* Статистика - Стекло */
+        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .stat-card { background: var(--glass); padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-10px); background: rgba(46, 204, 113, 0.1); border-color: var(--primary); }
+        .stat-card h3 { font-size: 3.5rem; color: var(--primary); margin-bottom: 10px; }
 
-        /* СТАТИСТИКА (РЕДАКТИРУЕМАЯ) */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; background: var(--dark); color: white; padding: 40px; border-radius: 20px; text-align: center; }
-        .stat-card h2 { color: var(--accent); font-size: 40px; margin-bottom: 5px; }
+        /* Галерея с увеличением */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .gallery-item { border-radius: 20px; overflow: hidden; cursor: pointer; position: relative; height: 250px; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.1); filter: brightness(1.2); }
 
-        /* ИНФО-БЛОКИ */
-        .info-block { background: white; padding: 30px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        /* Лайтбокс (увеличение фото) */
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 2000; cursor: pointer; padding: 40px; }
+        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 10px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
 
-        footer { background: var(--dark); color: white; padding: 50px; text-align: center; }
-        .edit-hint { color: #e74c3c; font-weight: bold; border: 1px dashed #e74c3c; padding: 2px; }
+        /* Видео контейнер */
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* Кнопки */
+        .btn { padding: 15px 40px; background: var(--primary); color: #000; text-decoration: none; border-radius: 50px; font-weight: 700; transition: 0.3s; display: inline-block; }
+        .btn:hover { box-shadow: 0 0 20px var(--primary); transform: scale(1.05); }
+
+        footer { padding: 50px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); color: #64748b; }
     </style>
 </head>
 <body>
 
+    <div class="bg-gradient"></div>
+
     <nav>
-        <div class="logo">ТАЛИСМАН АГРО</div>
-        <div>
-            <a href="#gallery">Фото</a>
-            <a href="#stats">Цифры</a>
+        <div class="logo">Talisman Agro</div>
+        <div class="nav-links">
+            <a href="#stats">Статистика</a>
+            <a href="#gallery">Галерея</a>
+            <a href="#video">Техника</a>
             <a href="#about">О нас</a>
         </div>
     </nav>
 
-    <div class="hero">
-        <h1>ТАЛИСМАН АГРО</h1>
-        <p>Агрологистика Сумской области: Погребки — Шостка</p>
-    </div>
-
-    <section id="gallery">
-        <div class="section-title"><h2>Галерея техники и полей</h2><p>Наш парк Volvo, MAN и моменты сбора урожая</p></div>
-        <div class="gallery">
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=400" alt="1"><span>Volvo FH</span></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?q=80&w=400" alt="2"><span>MAN TGX</span></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1558444479-c84826091c21?q=80&w=400" alt="3"><span>Поля пшеницы</span></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1594494424758-052044813083?q=80&w=400" alt="4"><span>Погрузка зерна</span></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=400" alt="5"><span>Комбайн</span></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1586191121278-200df1d4d35b?q=80&w=400" alt="6"><span>Автопарк</span></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1533241242791-517f2824e315?q=80&w=400" alt="7"><span>Урожай 2026</span></div>
-            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?q=80&w=400" alt="8"><span>Техника MAN</span></div>
-        </div>
-    </section>
+    <header>
+        <h1 data-aos="zoom-in">TALISMAN <span>AGRO</span></h1>
+        <p data-aos="fade-up">Премиальная агрологистика Украины. Безупречное качество перевозки вашего урожая.</p>
+        <a href="#gallery" class="btn" data-aos="fade-up" data-aos-delay="200">ОТКРЫТЬ ГАЛЕРЕЮ</a>
+    </header>
 
     <section id="stats">
-        <div class="stats-grid">
-            <div class="stat-card"><h2>9</h2><p>Единиц техники</p></div>
-            <div class="stat-card"><h2>24/7</h2><p>Логистика</p></div>
-            <div class="stat-card"><h2>15+</h2><p>Лет опыта</p></div>
-            <div class="stat-card"><h2>100%</h2><p>Доставка в срок</p></div>
+        <h2 class="section-title" data-aos="fade-up">Наши <span>Цифры</span></h2>
+        <div class="stats-container">
+            <div class="stat-card" data-aos="flip-left"><h3>150к</h3><p>Тонн груза</p></div>
+            <div class="stat-card" data-aos="flip-left" data-aos-delay="100"><h3>500к</h3><p>Км пробега</p></div>
+            <div class="stat-card" data-aos="flip-left" data-aos-delay="200"><h3>9</h3><p>Зерновозов</p></div>
+            <div class="stat-card" data-aos="flip-left" data-aos-delay="300"><h3>100%</h3><p>Надежность</p></div>
         </div>
     </section>
 
-    <section id="about">
-        <div class="info-block">
-            <h3>О компании</h3>
-            <p>Предприятие «Талисман Агро» базируется в селе Погребки. Мы специализируемся на перевозке зерновых культур (пшеница, кукуруза, семечка) собственным автопарком из 4-х Volvo и 5-ти MAN.</p>
-        </div>
-
-        <div class="info-block">
-            <h3>Добавить новую информацию</h3>
-            <p>Чтобы добавить сюда текст: зайди в код index.html через карандаш на GitHub, найди это место и просто напечатай свои слова. После нажатия Commit changes сайт обновится.</p>
-        </div>
-    </section>
-
-    <footer>
-        <p><strong>КОНТАКТЫ ДЛЯ СВЯЗИ:</strong></p>
-        <p>Сумская обл., Шосткинский р-н, с. Погребки</p>
-        <p>Тел: +38 (067) 000-00-00 (замени на свой)</p>
-    </footer>
-
-</body>
-</html>
+    <section id="gallery">
+        <h2 class="section-title" data-aos="fade-up">Фото <span>Парка</span></h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" data-aos="fade-up" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?q=80&w=800"></div>
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="100" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1580674285054-bed31e145f59?q=80&w=800"></div>
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="200" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1591768793355-74d75b0baacb?q=80&w=800"></div>
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="300" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1444858291040-58f756a3bdd6?q=80&w=800"></div>
+            <div class="gallery-item" data-aos="fade-up" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1533241242791-517f2824e315?q=80&w=800"></div>
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="100" onclick="openLightbox(this)"><img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=800"></div>
