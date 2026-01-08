@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MODERN STORE</title>
+    <style>
+        /* Светлый Apple-Style Дизайн */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, system-ui, sans-serif; }
+        body { background-color: #f5f5f7; color: #1d1d1f; line-height: 1.5; }
+        
+        /* Навигация */
+        nav { background: rgba(255,255,255,0.8); backdrop-filter: blur(20px); padding: 0 10%; height: 60px; display: flex; align-items: center; justify-content: space-between; position: fixed; width: 100%; top: 0; z-index: 1000; border-bottom: 1px solid #d2d2d7; }
+        .logo { font-size: 20px; font-weight: 700; }
+        .cart-btn { background: #0071e3; color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 500; cursor: pointer; }
+
+        /* Контент */
+        header { padding: 120px 10% 40px; text-align: center; }
+        header h1 { font-size: 48px; font-weight: 700; letter-spacing: -1px; }
+        header p { font-size: 20px; color: #86868b; margin-top: 10px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; padding: 40px 10%; }
+        
+        /* Карточка товара */
+        .card { background: white; border-radius: 20px; padding: 25px; text-align: center; transition: 0.3s; border: 1px solid #e5e5e5; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        
+        .img-container { background: #fbfbfd; border-radius: 15px; height: 200px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
+        
+        .card h3 { font-size: 22px; margin-bottom: 10px; }
+        .price { font-size: 18px; color: #424245; margin-bottom: 20px; }
+        .buy-btn { background: #f5f5f7; color: #0071e3; border: none; padding: 12px 0; width: 100%; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .buy-btn:hover { background: #0071e3; color: white; }
+
+        /* Увеличение фото (Lightbox) */
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); display: none; align-items: center; justify-content: center; z-index: 2000; cursor: zoom-out; }
+        #lightbox img { max-width: 90%; max-height: 80%; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        /* Корзина */
+        #sidebar { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: white; box-shadow: -10px 0 30px rgba(0,0,0,0.05); z-index: 1500; transition: 0.4s; padding: 60px 30px; }
+        #sidebar.active { right: 0; }
+        .close-sidebar { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">MODERN STORE</div>
+        <button class="cart-btn" onclick="toggleCart()">Корзина (<span id="count">0</span>)</button>
+    </nav>
+
+    <header>
+        <h1>Чистота в деталях.</h1>
+        <p>Светлый дизайн. Мощные функции. Работает везде.</p>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1523275339445-0ac141a0212b?w=500" onclick="openZoom(this.src)">
+            </div>
+            <h3>Smart Watch Pro</h3>
+            <p class="price">24 900 ₽</p>
+            <button class="buy-btn" onclick="add()">Добавить</button>
+        </div>
+
+        <div class="card">
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" onclick="openZoom(this.src)">
+            </div>
+            <h3>Premium Audio</h3>
+            <p class="price">18 500 ₽</p>
+            <button class="buy-btn" onclick="add()">Добавить</button>
+        </div>
+
+        <div class="card">
+            <div class="img-container">
+                <img src="https://images.unsplash.com/photo-1526170315836-3f8a444530f9?w=500" onclick="openZoom(this.src)">
+            </div>
+            <h3>Vintage Lens</h3>
+            <p class="price">32 000 ₽</p>
+            <button class="buy-btn" onclick="add()">Добавить</button>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <div class="close-sidebar" onclick="toggleCart()">×</div>
+        <h2>Корзина</h2>
+        <div id="items" style="margin-top: 30px; color: #86868b;">Пока тут пусто...</div>
+        <button class="buy-btn" style="margin-top: 40px; background: #000; color: #fff;">Оформить заказ</button>
+    </div>
+
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img src="" id="fullImg">
+    </div>
+
+    <script>
+        let counter = 0;
+        function add() {
+            counter++;
+            document.getElementById('count').innerText = counter;
+            document.getElementById('items').innerText = "Товаров в корзине: " + counter;
+            alert("Добавлено!");
+        }
+        function toggleCart() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+        function openZoom(src) {
+            document.getElementById('fullImg').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
